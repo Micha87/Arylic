@@ -1,0 +1,12 @@
+{
+    "id": "{F1A3C5B4-2888-0EB9-FC5D-1DABEBDE9FDD}",
+    "name": "Arylic",
+    "type": 3,
+    "vendor": "Arylic",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "ARY",
+    "url": ""
+}
