@@ -1,5 +1,15 @@
 {
-    "elements": [],
-    "actions": [],
-    "status": []
+    "elements": 
+    [
+        { "name": "IPAddresse", "type": "ValidationTextBox", "caption": "IP-Addresse"},
+        { "type": "Label", "caption": "Device" }
+    ],
+    "actions": 
+    [
+        {"type": "Button", "caption": "Auslesen", "onClick": "ARY_GetDeviceInformation($id);"}
+    ],
+    "status": 
+    [
+
+    ]
 }
