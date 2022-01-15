@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-	class Arylic extends IPSModule
+	class ArylicPlayer extends IPSModule
 	{
 		public function Create()
 		{
@@ -9,6 +9,8 @@ declare(strict_types=1);
 			parent::Create();
 			$this->createVariablenProfiles();
 			$this->RegisterPropertyString('IPAddresse', 'xxx.xxx.xxx.xxx');
+			//$this->RegisterTimer('Arylic Update', 0, 'Ary_update(' . $this->InstanceID . ');');
+
            	//$this->RegisterPropertyInteger('TimeOut', 1000);
 			
 			
@@ -214,7 +216,7 @@ declare(strict_types=1);
 				$this->SendDebug('Mute', $Value, 0);
 				
 		}
-		private function SetControl($Value)
+		private function SetPlayControl($Value)
 		{
 			$IP_Adresse=$this->ReadPropertyString('IPAddresse');
 			$this->SendDebug('Control', $Value, 0);
@@ -252,6 +254,53 @@ declare(strict_types=1);
 				SetValue($this->GetIDForIdent('Preset'),$Value);
 			}
 		}
+		public function PlayURL(string $Value)
+		{
+			$IP_Adresse=$this->ReadPropertyString('IPAddresse');
+			$this->SendDebug('URL', $Value, 0);
+			
+			Sys_GetURLContent("http://$IP_Adresse/httpapi.asp?command=setPlayerCmd:play:$Value");
+			
+		}
+		public function PlayM3U(string $Value)
+		{
+			$IP_Adresse=$this->ReadPropertyString('IPAddresse');
+			$this->SendDebug('URL', $Value, 0);
+			
+			Sys_GetURLContent("http://$IP_Adresse/httpapi.asp?command=setPlayerCmd:m3u:play:$Value");
+			
+		}
+
+		public function AddGuestDevicetoMultiroomGroup(string $Value)
+		{
+			$IP_Adresse=$this->ReadPropertyString('IPAddresse');
+			$this->SendDebug('AddGuestDevicetoMultiroomGroup', $Value, 0);
+			
+			Sys_GetURLContent("http://$IP_Adresse/httpapi.asp?command=ConnectMasterAp:JoinGroupMaster:eth$Value:wifi0.0.0.0");			
+		}
+		public function RemoveDevicetoMultiroomGroup(string $Value)
+		{
+			$IP_Adresse=$this->ReadPropertyString('IPAddresse');
+			$this->SendDebug('AddGuestDevicetoMultiroomGroup', $Value, 0);
+			
+			Sys_GetURLContent("/httpapi.asp?command=multiroom:SlaveKickout:$Value");			
+		}
+		public function  GetGuestDevicesMultiroomGroup(string $Value)
+		{
+			$IP_Adresse=$this->ReadPropertyString('IPAddresse');
+						
+			$return=Sys_GetURLContent("http://$IP_Adresse/httpapi.asp?command=multiroom:getSlaveList");
+			$this->SendDebug('GuestDevicesMultiroomGroup', $return, 0);
+		}
+
+		public function  MuteGuestDevice(string $IP,bool $mute)
+		{
+			$IP_Adresse=$this->ReadPropertyString('IPAddresse');
+						
+			$return=Sys_GetURLContent("http://$IP_Adresse/httpapi.asp?command=multiroom:SlaveMute:$IP:$mute");
+			
+		}
+
 		private function hexToStr($hex)
 		{
 			$string='';
@@ -278,7 +327,7 @@ declare(strict_types=1);
 					$this->GetPlayerState();
 					break;
 				case'Control':
-					$this->SetControl($Value);
+					$this->SetPlayControl($Value);
 					$this->GetPlayerState();
 					break;
 				case'Preset':
@@ -326,11 +375,11 @@ declare(strict_types=1);
             		IPS_CreateVariableProfile('Ary.Presets', 1);
 			}
 			
-			IPS_SetVariableProfileAssociation("Ary.Presets", 0, "", "", 0xFFFFFF);
+			/*IPS_SetVariableProfileAssociation("Ary.Presets", 0, "", "", 0xFFFFFF);
 			IPS_SetVariableProfileAssociation("Ary.Presets", 1, "", "", 0xFFFFFF);
 			IPS_SetVariableProfileAssociation("Ary.Presets", 2, "", "", 0xFFFFFF);
 			IPS_SetVariableProfileAssociation("Ary.Presets", 3, "", "", 0xFFFFFF);
 			IPS_SetVariableProfileAssociation("Ary.Presets", 4, "", "", 0xFFFFFF);
-			IPS_SetVariableProfileAssociation("Ary.Presets", 5, "", "", 0xFFFFFF);
+			IPS_SetVariableProfileAssociation("Ary.Presets", 5, "", "", 0xFFFFFF);*/
 		}	
 	}
